@@ -20,11 +20,13 @@ def leaky_relu(x, alpha=0.01):
         alpha (float): 负斜率系数，默认为 0.01。
 
     Return:
-        np.array: Leaky ReLU 激活后的数组，形状与输入相同。
+        np.array: Leaky ReLU 激活后的数组，形状与输入相同。负斜率的系数
     """
     # 请在此处编写代码
     # 提示：
     # 1. 可以使用 np.maximum() 函数。
     # 2. 计算 alpha * x。
     # 3. 计算 max(alpha * x, x)。
-    pass 
+    # pass
+    y = np.maximum(alpha * x, x)
+    return y 

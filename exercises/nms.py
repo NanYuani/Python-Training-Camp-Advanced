@@ -8,7 +8,6 @@
 请补全下面的函数 `calculate_iou` 和 `nms`。
 """
 import numpy as np
-
 def calculate_iou(box1, box2):
     """
     计算两个边界框的交并比 (IoU)。
@@ -24,7 +23,8 @@ def calculate_iou(box1, box2):
     # 请在此处编写代码
     # (与 iou.py 中的练习相同，可以复用代码或导入)
     # 提示：计算交集面积和并集面积，然后相除。
-    pass
+    # pass
+    
 
 def nms(boxes, scores, iou_threshold):
     """
@@ -52,4 +52,26 @@ def nms(boxes, scores, iou_threshold):
     #    c. 找到 IoU 小于等于 iou_threshold 的索引 inds。
     #    d. 更新 order，只保留那些 IoU <= threshold 的框的索引 (order = order[inds + 1])。
     # 7. 返回 keep 列表。
-    pass 
+    # pass 
+    if boxes.len() == 0:
+        return []
+    boxes = np.array(boxes)
+    scores = np.array(scores)
+    order =np.argsort(scores)[::-1] # The index of the boxes from the highest score to the lowest score.
+    keep = []
+    while order.len() > 0:
+        i = order[0] 
+        keep.append(i)
+        xx1 = np.maximum(boxes[i,0], boxes[order[1:],0]) # The boxes[order[1:],0] is a list of the remaining boxes.
+        yy1 = np.maximum(boxes[i,1], boxes[order[1:],1])
+        xx2 = np.minimum(boxes[i,2], boxes[order[1:],2])
+        yy2 = np.minimum(boxes[i,3], boxes[order[1:],3])
+        w = np.maximum(0.0, xx2 - xx1 + 1)
+        h = np.maximum(0.0, yy2 - yy1 + 1)
+        intersection = w * h
+        iou = intersection / (areas[i] + areas[order[1:]] - intersection)
+        inds = np.where(iou <= iou_threshold)[0]
+        order = order[inds + 1] 
+    return keep
+    
+
