@@ -30,36 +30,21 @@ def contour_detection(image_path):
     # 8. 返回绘制后的图像和轮廓列表。
     # 9. 使用 try...except 处理异常。
     # pass
-    # try:
-    #     img = cv2.imread(image_path)
-    #     if img is None:
-    #         return None, None
-
-    #     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #     _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-        
-    #     # 获取轮廓时转换为Python列表
-    #     contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2:]
-    #     contours = list(contours)  # 确保返回Python列表类型
-
-    #     img_copy = img.copy()
-    #     cv2.drawContours(img_copy, contours, -1, (0, 255, 0), 2)
-    #     return img_copy, contours
-    # except Exception as e:
-    #     print(f"发生错误: {e}")
-    #     return None, None
     try:
         img = cv2.imread(image_path)
         if img is None:
-            return None,None
-        gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-        _,thresh = cv2.threshold(gray,128,255,cv2.THRESH_BINARY)
-        # 使用切片获得对应值兼容不同版本的OpenCV。
-        contours , _ = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)[-2:]
-        contours = list(contours)
+            return None, None
+
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+        
+        # 获取轮廓时转换为Python列表
+        contours, _ = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2:]
+        contours = list(contours)  # 确保返回Python列表类型
+
         img_copy = img.copy()
-        cv2.drawContours(img_copy,contours,-1,(0,255,0),2)
-        return img_copy,contours
+        cv2.drawContours(img_copy, contours, -1, (0, 255, 0), 2)
+        return img_copy, contours
     except Exception as e:
-        print(f"Error processing image: {e}")
-        return None,None
+        print(f"发生错误: {e}")
+        return None, None

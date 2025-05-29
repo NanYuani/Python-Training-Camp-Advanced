@@ -20,7 +20,7 @@ def leaky_relu(x, alpha=0.01):
         alpha (float): 负斜率系数，默认为 0.01。
 
     Return:
-        np.array: Leaky ReLU 激活后的数组，形状与输入相同。负斜率的系数
+        np.array: Leaky ReLU 激活后的数组，形状与输入相同。
     """
     # 请在此处编写代码
     # 提示：

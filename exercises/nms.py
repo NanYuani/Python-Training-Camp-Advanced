@@ -24,7 +24,18 @@ def calculate_iou(box1, box2):
     # (与 iou.py 中的练习相同，可以复用代码或导入)
     # 提示：计算交集面积和并集面积，然后相除。
     # pass
-    
+    x1_min, y1_min, x1_max, y1_max = box1
+    x2_min, y2_min, x2_max, y2_max = box2
+    x_min = max(x1_min, x2_min)
+    y_min = max(y1_min, y2_min)
+    x_max = min(x1_max, x2_max)
+    y_max = min(y1_max, y2_max)
+    intersection = max(0, x_max - x_min) * max(0, y_max - y_min)
+    area1 = (x1_max - x1_min) * (y1_max - y1_min)
+    area2 = (x2_max - x2_min) * (y2_max - y2_min)
+    union = area1 + area2 - intersection
+    iou = intersection / union
+    return iou
 
 def nms(boxes, scores, iou_threshold):
     """
@@ -53,25 +64,24 @@ def nms(boxes, scores, iou_threshold):
     #    d. 更新 order，只保留那些 IoU <= threshold 的框的索引 (order = order[inds + 1])。
     # 7. 返回 keep 列表。
     # pass 
-    if boxes.len() == 0:
+    if len(boxes) == 0:
         return []
     boxes = np.array(boxes)
     scores = np.array(scores)
-    order =np.argsort(scores)[::-1] # The index of the boxes from the highest score to the lowest score.
+    areas = (boxes[:, 2] - boxes[:, 0]) * (boxes[:, 3] - boxes[:, 1])
+    order = np.argsort(scores)[::-1]
     keep = []
-    while order.len() > 0:
-        i = order[0] 
+    while len(order) > 0:
+        i = order[0]
         keep.append(i)
-        xx1 = np.maximum(boxes[i,0], boxes[order[1:],0]) # The boxes[order[1:],0] is a list of the remaining boxes.
-        yy1 = np.maximum(boxes[i,1], boxes[order[1:],1])
-        xx2 = np.minimum(boxes[i,2], boxes[order[1:],2])
-        yy2 = np.minimum(boxes[i,3], boxes[order[1:],3])
-        w = np.maximum(0.0, xx2 - xx1 + 1)
-        h = np.maximum(0.0, yy2 - yy1 + 1)
+        xx1 = np.maximum(boxes[i, 0], boxes[order[1:], 0])
+        yy1 = np.maximum(boxes[i, 1], boxes[order[1:], 1])
+        xx2 = np.minimum(boxes[i, 2], boxes[order[1:], 2])
+        yy2 = np.minimum(boxes[i, 3], boxes[order[1:], 3])
+        w = np.maximum(0, xx2 - xx1)
+        h = np.maximum(0, yy2 - yy1)
         intersection = w * h
         iou = intersection / (areas[i] + areas[order[1:]] - intersection)
         inds = np.where(iou <= iou_threshold)[0]
-        order = order[inds + 1] 
+        order = order[inds + 1]
     return keep
-    
-

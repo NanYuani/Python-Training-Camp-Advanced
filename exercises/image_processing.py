@@ -28,27 +28,15 @@ def image_processing_pipeline(image_path):
     # 5. 使用 cv2.Canny() 进行边缘检测。
     # 6. 使用 try...except 包裹代码以处理可能的异常。
     # pass
-    # try:
-    #     img = cv2.imread(image_path)
-    #     if img is None:
-    #         return None
-    #     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    #     blurred = cv2.GaussianBlur(gray, (5, 5), 0)
-    #     edges = cv2.Canny(blurred, 50, 150)
-    #     return edges
-    # except Exception as e:
-    #     print(f"Error processing image: {e}")
-    #     return None
     try:
         img = cv2.imread(image_path)
         if img is None:
             return None
-        gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(grauy,(5,5),0) 
-        edges = cv2.Canny(blurred,50,150)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        blurred = cv2.GaussianBlur(gray, (5, 5), 0)
+        edges = cv2.Canny(blurred, 50, 150)
         return edges
     except Exception as e:
         print(f"Error processing image: {e}")
-        return None
-
+        return None 
     
